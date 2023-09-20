@@ -1,0 +1,12 @@
+S = 100;
+K = 100;
+T = 1.5;
+r = 0.04;
+f_sigma = 10.78;
+x_0 = 0.15;
+%d1 = @(sigma) (log(S/K) + (r+0.5*sigma*sigma)*T)/(sigma*sqrt(T));
+%d2 = @(sigma) d1 - sigma * sqrt(T);
+epsilon = 1e-5;
+[sigma, j] = newtonmethod1D(x_0, T, S, r, K, epsilon);
+
+c
