@@ -1,11 +1,9 @@
-S = 100;
-K = 100;
-T = 1.5;
-r = 0.04;
-f_sigma = 10.78;
-x_0 = 0.15;
-%d1 = @(sigma) (log(S/K) + (r+0.5*sigma*sigma)*T)/(sigma*sqrt(T));
-%d2 = @(sigma) d1 - sigma * sqrt(T);
-epsilon = 1e-5;
-[sigma, j] = newtonmethod1D(x_0, T, S, r, K, epsilon);
+S = 100; %Current value of the stock, S(0) 
+K = 100; %Strike of the option
+T = 1.5; %Expiration
+r = 0.04; %Risk-free rate
+sigma_0 = 0.5; %Chosen at random in interval (O,1)
+epsilon = 1e-12; %Tolerance 
+[sigma, iterations] = newtonmethod1D(sigma_0, T, S, r, K, epsilon)
+
 
