@@ -1,3 +1,4 @@
+clear
 %% Exercise 1
 S = 100; %Current value of the stock, S(0) 
 K = 100; %Strike of the option
