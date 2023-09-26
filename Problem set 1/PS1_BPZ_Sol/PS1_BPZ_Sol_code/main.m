@@ -40,13 +40,17 @@ y = [2;2];
 alpha1 = 0.1;
 alpha2 = 1e-2;
 alpha3 = 1e-3;
+alpha4 = 0.18;
 
 epsilon= 1e-6;
 
 [x_gd_star_1, a] = cstgradientdescent(grad_f, x, alpha1,epsilon)
 [x_gd_star_2, b] = cstgradientdescent(grad_f, x, alpha2,epsilon)
 [x_gd_star_3, c] = cstgradientdescent(grad_f, x, alpha3,epsilon)
+[x_gd_star_4, d] = cstgradientdescent(grad_f, x, alpha4,epsilon)
 
 [y_gd_star_1, e] = cstgradientdescent(grad_f, y, alpha1,epsilon)
 [y_gd_star_2, f] = cstgradientdescent(grad_f, y, alpha2,epsilon)
 [y_gd_star_3, g] = cstgradientdescent(grad_f, y, alpha3,epsilon)
+[y_gd_star_4, h] = cstgradientdescent(grad_f, y, alpha4,epsilon)
+
