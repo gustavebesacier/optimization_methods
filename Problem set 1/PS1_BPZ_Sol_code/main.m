@@ -1,3 +1,4 @@
+% Zein Agustina, Perazzi Eva, Besacier Gustave
 clear
 %% Exercise 1
 S = 100; %Current value of the stock, S(0) 
@@ -28,7 +29,7 @@ y = [2;2];
 epsilon = 1e-6; 
 
 [x_star, j] = newtonmethod2D(f, grad_f, hess_f, x, epsilon)
-[y_star, j] = newtonmethod2D(f, grad_f, hess_f, y, epsilon)
+%[y_star, j] = newtonmethod2D(f, grad_f, hess_f, y, epsilon)
 
 %% Exercise 2b
 grad_f = @(q) [4*(q(1) - 2)^3 + 2*(q(1) - 2*q(2)); -4*(q(1) - 2*q(2))];
