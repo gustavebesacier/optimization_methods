@@ -16,12 +16,10 @@ x1 = [1982, 201]
 x2 = [9872, 98655]
 x3 = [2.3, 8]
 
-"""[2.831737375259399, 8.051544189453125], [2.831678345799445, 8.051538467407227], [2.8317078605294226, 8.051541328430176]"""
-
 alpha = 1
 beta = 0.5
 gamma = 2
-epsilon = 1e-6
+epsilon = 1e-12
 
 
 def rosenbrock(x):
@@ -36,6 +34,7 @@ if __name__ == '__main__':
     counter = 0
     simplex = [x1, x2, x3]
     worse = [0, 0]
+    best = min(fx)
 
     while epsilon < diff:
 
@@ -48,28 +47,25 @@ if __name__ == '__main__':
             if fx[i] >= res:
 
                 res = fx[i]
-                #worse = copy.deepcopy(simplex[i])
                 worse = simplex[i]
-                print("ceci est worse ", worse)
                 k = i
 
         simplex.remove(worse)
 
-        c = [
-            (simplex[0][0] + simplex[1][0]) / 2,
-            (simplex[0][1] + simplex[1][1]) / 2
-        ]
+        c = [(simplex[0][0] + simplex[1][0]) / 2, (simplex[0][1] + simplex[1][1]) / 2]
 
-        x_try = [(1 + alpha) * c[0] - alpha * c[0], (1 + alpha) * c[1] - alpha * c[1]]
-        print("Voici x_try, ", x_try)
+        x_try = [(1 + alpha) * c[0] - alpha * worse[0], (1 + alpha) * c[1] - alpha * worse[1]]
 
         if rosenbrock(x_try) > rosenbrock(worse):
             x_new = [(1 - beta) * c[0] + beta * worse[0], (1 - beta) * c[1] + beta * worse[1]]
+        elif rosenbrock(x_try) < best:
+            x_new = [(1 + gamma) * x_try[0] - gamma * c[0], (1 + gamma) * x_try[1] - gamma * c[1]]
         else:
-            x_new = [(1 + gamma) * x_try[0] - gamma * x_try[0], (1 + gamma) * x_try[1] - gamma * x_try[1]]
+            x_new = copy.deepcopy(x_try)
 
         simplex.append(x_new)
         fx = [rosenbrock(simplex[0]), rosenbrock(simplex[1]), rosenbrock(simplex[2])]
+        best = min(fx)
         diff = max(fx) - min(fx)
 
     print(f"Executed in {counter} iterations")
