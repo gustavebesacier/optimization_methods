@@ -22,25 +22,25 @@ if __name__ == '__main__':
     # List of the result of the Rosenbrock function at the 3 initial points
     fx = [rosenbrock(x1), rosenbrock(x2), rosenbrock(x3)]
 
-    # We set the initial values of the difference between the biggest / smallest value of Rosenbrock
+    # We set the initial value of the difference between the biggest / smallest value of the Rosenbrock function evaluated at each point of the initial simplex
     diff = max(fx) - min(fx)
 
-    # Set a counter, intialize the worse point at (0,0), best
+    # Set a counter, intialize the worse point at (0,0) and the best point where the evaluation of the Rosenbrock function is minimal
     counter = 0
     worse = [0, 0]
     best = min(fx)
 
-    # simplex is the list of points constituting the simplex
+    # Creation of the initial simplex
     simplex = [x1, x2, x3]
 
-    # Loop, turns until the difference between the smallest and largest value of Rosenbrock is smaller than the tolerance level
+    # Loop, continues until the difference between the smallest and the largest value of the evaluation of the Rosenbrock function at the simplex points is smaller than the tolerance level
     while epsilon < diff:
 
         counter += 1
         res = min(fx)
         k = 0
 
-        # For each point, if the result of the function is smaller larger than the worst point, it becomes the worst point
+        # For each point, if the evaluation of the function at this point is larger than the worst point, it becomes the worst point
         for i in range(len(simplex)):
 
             if fx[i] >= res:
@@ -62,7 +62,7 @@ if __name__ == '__main__':
         if rosenbrock(x_try) > rosenbrock(worse):
             x_new = [(1 - beta) * c[0] + beta * worse[0], (1 - beta) * c[1] + beta * worse[1]]
 
-        # Expansion of the simplex, if x_try is closest to the minimum of the function
+        # Expansion of the simplex, if x_try is such that f(x_try) is better than the other evaluations previously computed
         elif rosenbrock(x_try) < best:
             x_new = [(1 + gamma) * x_try[0] - gamma * c[0], (1 + gamma) * x_try[1] - gamma * c[1]]
 
