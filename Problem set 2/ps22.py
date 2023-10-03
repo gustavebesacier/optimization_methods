@@ -1,47 +1,46 @@
-import copy
-
-# x1 = [1, 2]
-# x2 = [0.5, 0.8]
-# x3 = [2.3, 8]
+x1 = [1, 2]
+x2 = [0.5, 0.8]
+x3 = [2.3, 8]
 
 # x1 = [1, 1]
 # x2 = [2, 2]
 # x3 = [3, 3]
 
-# x1 = [1983, 200]
-# x2 = [9873, 98656]
-# x3 = [2.3, 8]
-
-x1 = [1982, 201]
-x2 = [9872, 98655]
-x3 = [2.3, 8]
-
 alpha = 1
 beta = 0.5
 gamma = 2
-epsilon = 1e-12
+epsilon = 10**(-10)
 
 
+# Definition of the Rosenbrock function
 def rosenbrock(x):
     return (1 - x[0]) ** 2 + 10 * (x[1] - x[0] ** 2) ** 2
 
 
 if __name__ == '__main__':
 
+    # List of the result of the Rosenbrock function at the 3 initial points
     fx = [rosenbrock(x1), rosenbrock(x2), rosenbrock(x3)]
 
+    # We set the initial values of the difference between the biggest / smallest value of Rosenbrock
     diff = max(fx) - min(fx)
+
+    # Set a counter, intialize the worse point at (0,0), best
     counter = 0
-    simplex = [x1, x2, x3]
     worse = [0, 0]
     best = min(fx)
 
+    # simplex is the list of points constituting the simplex
+    simplex = [x1, x2, x3]
+
+    # Loop, turns until the difference between the smallest and largest value of Rosenbrock is smaller than the tolerance level
     while epsilon < diff:
 
         counter += 1
         res = min(fx)
         k = 0
 
+        # For each point, if the result of the function is smaller larger than the worst point, it becomes the worst point
         for i in range(len(simplex)):
 
             if fx[i] >= res:
@@ -50,23 +49,35 @@ if __name__ == '__main__':
                 worse = simplex[i]
                 k = i
 
+        # Remove the worst point from the points of the simplex
         simplex.remove(worse)
 
+        # Centroid computation
         c = [(simplex[0][0] + simplex[1][0]) / 2, (simplex[0][1] + simplex[1][1]) / 2]
 
+        # x_try
         x_try = [(1 + alpha) * c[0] - alpha * worse[0], (1 + alpha) * c[1] - alpha * worse[1]]
 
+        # Contraction of the simplex, if x_try is worse than the worst point
         if rosenbrock(x_try) > rosenbrock(worse):
             x_new = [(1 - beta) * c[0] + beta * worse[0], (1 - beta) * c[1] + beta * worse[1]]
+
+        # Expansion of the simplex, if x_try is closest to the minimum of the function
         elif rosenbrock(x_try) < best:
             x_new = [(1 + gamma) * x_try[0] - gamma * c[0], (1 + gamma) * x_try[1] - gamma * c[1]]
-        else:
-            x_new = copy.deepcopy(x_try)
 
+        # No contraction / no expansion
+        else:
+            x_new = x_try
+
+        # Add the new point to the simplex
         simplex.append(x_new)
+
+        # Re-compute the value of the function at the points of the simplex
         fx = [rosenbrock(simplex[0]), rosenbrock(simplex[1]), rosenbrock(simplex[2])]
+
         best = min(fx)
         diff = max(fx) - min(fx)
 
     print(f"Executed in {counter} iterations")
-    print(f"The of the function is {simplex}")
+    print(f"The minimum of the function is at {simplex[1]}.")
