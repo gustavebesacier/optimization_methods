@@ -15,16 +15,18 @@ def func(x):
 
 # Definition of the constraint function
 def constraint(x):
-    return x[0] - x[1]**2
+    return (x[0] - x[1]**2)**2
 
 def auxiliary(x, mu):
     return func + mu*(constraint(x))
 
 def grad_aux(x, mu):
-    return func + mu*(constraint(x))
+    return l.array[(4 + 2*mu)*x[0] - 2*(2 + mu*x[1])*x[1] - 2, 
+                   -2*(1 + mu*x[1])*x[0] + 4*(1 + mu*(x[1]**2))*x[1]]
 
 def hess_aux(x, mu):
-    return func + mu*(constraint(x))
+    return l.array([[4+2*mu, 4*(1+mu*x[1])], 
+                     [-2*(1+mu*x[1]), -2*mu*x[0] + 4*(1+3*mu*(x[1]**2))]])
 
 def gradient_descent(func, x, epsilon):
     x_star = x
