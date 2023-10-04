@@ -6,7 +6,7 @@ mu = 10.
 epsilon = 10**(-6)
 x_next = x0
 diff = np.abs(x0[1]-x0[0])
-k=1000
+k=100
 i=1
 
 
