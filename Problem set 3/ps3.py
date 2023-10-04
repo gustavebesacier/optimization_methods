@@ -17,7 +17,13 @@ def func(x):
 def constraint(x):
     return x[0] - x[1]**2
 
-def auxiliary(x):
+def auxiliary(x, mu):
+    return func + mu*(constraint(x))
+
+def grad_aux(x, mu):
+    return func + mu*(constraint(x))
+
+def hess_aux(x, mu):
     return func + mu*(constraint(x))
 
 def gradient_descent(func, x, epsilon):
@@ -29,13 +35,13 @@ def gradient_descent(func, x, epsilon):
         norme_grad = l.norm(func(x_star), np.inf)
     return x_star
 
-def newton_method(func, grad_func, hess_func, x, epsilon):
+def newton_method(func, grad_func, hess_func, x, mu, epsilon):
     x_star = x
-    norme_grad = l.norm(grad_func(x_star), 1)
+    norme_grad = l.norm(grad_func(x_star, mu), 1)
  
     while norme_grad > epsilon:
-     x_star = x_star - invhess_func(x_star)\feval(grad_f, x_star)
-     norme_grad = norm(grad_f(x_star))
+     x_star = x_star - l.inv(hess_func(x_star, mu))*grad_func(x_star, mu)
+     norme_grad = l.norm(grad_func(x_star, mu))
 
     return x_star
 
@@ -45,11 +51,8 @@ if __name__ == '__main__':
     # Loop, continues until the difference between the smallest and the largest value of the evaluation of the Rosenbrock function at the simplex points is smaller than the tolerance level
     while epsilon < diff:
     
-        x_next = gradient_descent(auxiliary, x_next, epsilon)
-
-        counter += 1
-        res = min(fx)
-        k = 0
+        x_next = newton_method(auxiliary, grad_aux, hess_aux, x_next, mu, epsilon)
+        mu = 1/2 * mu
 
         # For each point, if the evaluation of the function at this point is larger than the worst point, it becomes the worst point
         for i in range(len(simplex)):
