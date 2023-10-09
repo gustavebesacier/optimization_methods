@@ -20,15 +20,14 @@ def grad_aux(x, mu):
     """Gradient of the auxiliary function"""
     y = x[0]
     z = x[1]
-    return np.array([4*(y-2)**3 + 2*(y - 2*z) + 2*mu*(y-z**2), 
-                   -4*(y - 2*z) - 4*mu*z*(y - z**2)])
+    return np.array([4*(y-2)**3 + 2*(y - 2*z) + 2*mu*(y-z**2), -4*(y - 2*z) - 4*mu*z*(y - z**2)])
 
 def hess_aux(x, mu):
     """Hessian of the auxiliary function"""
     y = x[0]
     z = x[1]
-    return np.array([[12*(y - 2)**2 + 2 + 2*mu, -4 - 4*mu*z],
-                     [-4 - 4*mu*z, 8 - 4*mu*y + 24*mu*z**2]])
+    #return np.array([[12*(y - 2)**2 + 2 + 2*mu, -4 - 4*mu*z], [-4 - 4*mu*z, 8 - 4*mu*y + 24*mu*z**2]])
+    return np.array([[12*(y - 2)**2 + 2 + 2*mu, -4 - 4*mu*z], [-4 - 4*mu*z, 8 - 4*mu*y + 12*mu*z**2]])
 
 def gradient_descent(func, x, epsilon):
     x_star = x
